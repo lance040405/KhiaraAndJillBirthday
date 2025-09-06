@@ -1,143 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Khiara and Jill's Birthday Samgyupsal</title>
   <style>
     body {
       margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #0a1a2f, #001f3f);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
       min-height: 100vh;
-      overflow-x: hidden;
       padding: 20px;
     }
 
     h1 {
-      font-size: 2.2rem;
-      margin: 20px 0;
       text-align: center;
-      background: linear-gradient(90deg, #ffd700, #87ceeb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      color: #ffcc70;
+      text-shadow: 0 0 10px rgba(255, 204, 112, 0.7);
     }
 
-    .countdown {
-      position: relative;
-      border: 3px solid rgba(255, 215, 0, 0.3);
-      border-radius: 20px;
-      padding: 20px 40px;
-      font-size: 2rem;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      margin-bottom: 25px;
-      transition: transform 0.3s ease;
-      width: 100%;
-      max-width: 600px;
-    }
-
-    .countdown:hover {
-      transform: translateY(-5px);
-    }
-
-    .glow-border {
-      position: absolute;
-      top: -3px;
-      left: -3px;
-      right: -3px;
-      bottom: -3px;
-      border-radius: 20px;
-      pointer-events: none;
-      background: conic-gradient(
-        from var(--angle, 0deg),
-        #ffd700,
-        transparent 60%
-      );
-      mask: linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-      -webkit-mask-composite: destination-out;
-      mask-composite: exclude;
-      padding: 3px;
-      z-index: 1;
-    }
-
-    .form-container {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      width: 100%;
-      max-width: 500px;
-      margin-bottom: 25px;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: 500;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-    }
-
-    .options {
-      display: flex;
-      gap: 15px;
-      margin: 10px 0;
-    }
-
-    button {
-      background: linear-gradient(90deg, #ffd700, #87ceeb);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      font-weight: bold;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-    }
-
-    .rsvp-lists {
+    .main-container {
       display: flex;
       flex-direction: column;
       gap: 20px;
       width: 100%;
-      max-width: 600px;
+      max-width: 1000px;
+    }
+
+    .top-section {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .countdown {
+      position: relative;
+      padding: 20px;
+      border-radius: 20px;
+      background: #0f3460;
+      text-align: center;
+      font-size: 2rem;
+      color: #ffcc70;
+      flex: 1 1 300px;
+      max-width: 400px;
+      overflow: hidden;
+    }
+
+    .glow-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: conic-gradient(#ffcc70, #f72585, #7209b7, #3a0ca3, #ffcc70);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      animation: rotate 6s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    #timer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-container {
+      background: #0f3460;
+      padding: 20px;
+      border-radius: 20px;
+      flex: 1 1 300px;
+      max-width: 400px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #ffcc70;
+      color: #16213e;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #f72585;
+      color: white;
+    }
+
+    .rsvp-lists {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .list {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.05);
+      background: #0f3460;
       padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      flex: 1 1 300px;
+      max-width: 400px;
     }
 
     .list h3 {
       margin-top: 0;
-      color: #ffd700;
-      font-size: 1.2rem;
+      color: #ffcc70;
     }
 
     ul {
@@ -148,131 +147,117 @@
 
     ul li {
       padding: 5px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      animation: fadeIn 0.6s ease forwards;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
       h1 {
         font-size: 1.8rem;
       }
 
-      .countdown {
-        font-size: 1.4rem;
-        padding: 15px 20px;
+      .top-section {
+        flex-direction: row;
+        gap: 15px;
+      }
+
+      .countdown, .form-container {
+        flex: 1 1 100%;
+        max-width: 100%;
+        font-size: 1.2rem;
       }
 
       .rsvp-lists {
-        flex-direction: column;
+        flex-direction: row;
+      }
+
+      .list {
+        flex: 1 1 45%;
+        min-width: 200px;
       }
     }
   </style>
 </head>
 <body>
   <h1>Khiara and Jill's Birthday Samgyupsal</h1>
-  <div class="countdown" id="countdown">
-    <div class="glow-border"></div>
-    <div id="timer"></div>
-  </div>
 
-  <div class="form-container">
-    <form id="rsvpForm">
-      <label for="name">Name:</label>
-      <input type="text" id="name" required />
-      <div class="options">
-        <label><input type="radio" name="status" value="going" required /> Going</label>
-        <label><input type="radio" name="status" value="notGoing" /> Not Going</label>
+  <div class="main-container">
+    <div class="top-section">
+      <div class="countdown" id="countdown">
+        <div class="glow-border"></div>
+        <div id="timer"></div>
       </div>
-      <button type="submit">Submit</button>
-    </form>
+
+      <div class="form-container">
+        <form id="rsvpForm">
+          <label for="name">Name:</label>
+          <input type="text" id="name" required />
+          <div class="options">
+            <label><input type="radio" name="status" value="going" required /> Going</label>
+            <label><input type="radio" name="status" value="notGoing" /> Not Going</label>
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="rsvp-lists">
+      <div class="list">
+        <h3>✅ Going</h3>
+        <ul id="goingList"></ul>
+      </div>
+      <div class="list">
+        <h3>❌ Not Going</h3>
+        <ul id="notGoingList"></ul>
+      </div>
+    </div>
   </div>
 
-  <div class="rsvp-lists">
-    <div class="list">
-      <h3>✅ Going</h3>
-      <ul id="goingList"></ul>
-    </div>
-    <div class="list">
-      <h3>❌ Not Going</h3>
-      <ul id="notGoingList"></ul>
-    </div>
-  </div>
-
-  <canvas id="confettiCanvas"></canvas>
+  <canvas id="confettiCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999;"></canvas>
 
   <script>
     // Countdown
-    const countdownDate = new Date("September 13, 2025 13:00:00 GMT-0800").getTime();
+    const eventDate = new Date("2025-09-15T18:00:00").getTime();
     const timerEl = document.getElementById("timer");
 
-    function updateCountdown() {
+    const countdown = setInterval(() => {
       const now = new Date().getTime();
-      const diff = countdownDate - now;
-      if (diff <= 0) {
+      const distance = eventDate - now;
+
+      if (distance < 0) {
+        clearInterval(countdown);
         timerEl.innerHTML = "🎉 It's Party Time! 🎉";
-        clearInterval(interval);
+        launchConfetti();
         return;
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
       timerEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-    const interval = setInterval(updateCountdown, 1000);
-    updateCountdown();
+    }, 1000);
 
-    // Glow border logic
-    const countdownEl = document.getElementById("countdown");
-    const glow = countdownEl.querySelector(".glow-border");
-    let angle = 0;
-    let isMobile = /Mobi|Android/i.test(navigator.userAgent);
-
-    if (!isMobile) {
-      document.addEventListener("mousemove", (e) => {
-        const rect = countdownEl.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        angle = Math.atan2(y, x) * (180 / Math.PI);
-        glow.style.setProperty("--angle", angle + "deg");
-      });
-    } else {
-      function animateBorder() {
-        angle += 1;
-        glow.style.setProperty("--angle", angle + "deg");
-        requestAnimationFrame(animateBorder);
-      }
-      animateBorder();
-    }
-
-    // RSVP logic with localStorage
+    // RSVP Storage
     const form = document.getElementById("rsvpForm");
     const goingList = document.getElementById("goingList");
     const notGoingList = document.getElementById("notGoingList");
 
     function loadRSVPs() {
-      const data = JSON.parse(localStorage.getItem("rsvps")) || [];
-      data.forEach(r => addToList(r.name, r.status, false));
-    }
-
-    function saveRSVP(name, status) {
-      const data = JSON.parse(localStorage.getItem("rsvps")) || [];
-      data.push({ name, status });
-      localStorage.setItem("rsvps", JSON.stringify(data));
-    }
-
-    function addToList(name, status, save = true) {
-      const li = document.createElement("li");
-      li.textContent = name;
-      if (status === "going") goingList.appendChild(li);
-      else notGoingList.appendChild(li);
-      if (save) saveRSVP(name, status);
+      const data = JSON.parse(localStorage.getItem("rsvps")) || { going: [], notGoing: [] };
+      goingList.innerHTML = "";
+      notGoingList.innerHTML = "";
+      data.going.forEach(name => {
+        const li = document.createElement("li");
+        li.textContent = name;
+        goingList.appendChild(li);
+      });
+      data.notGoing.forEach(name => {
+        const li = document.createElement("li");
+        li.textContent = name;
+        notGoingList.appendChild(li);
+      });
     }
 
     form.addEventListener("submit", (e) => {
@@ -280,49 +265,71 @@
       const name = document.getElementById("name").value.trim();
       const status = document.querySelector("input[name='status']:checked").value;
       if (!name) return;
-      addToList(name, status, true);
+
+      const data = JSON.parse(localStorage.getItem("rsvps")) || { going: [], notGoing: [] };
+      if (status === "going") {
+        if (!data.going.includes(name)) data.going.push(name);
+      } else {
+        if (!data.notGoing.includes(name)) data.notGoing.push(name);
+      }
+      localStorage.setItem("rsvps", JSON.stringify(data));
+      loadRSVPs();
       form.reset();
-      if (status === "going") launchConfetti();
     });
 
     loadRSVPs();
 
     // Confetti
-    const confettiCanvas = document.getElementById("confettiCanvas");
-    const ctx = confettiCanvas.getContext("2d");
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
-
     function launchConfetti() {
-      let particles = [];
-      for (let i = 0; i < 100; i++) {
-        particles.push({
-          x: Math.random() * confettiCanvas.width,
-          y: Math.random() * confettiCanvas.height - confettiCanvas.height,
-          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-          size: Math.random() * 8 + 2,
-          speed: Math.random() * 5 + 2
-        });
+      const duration = 5 * 1000; // 5 seconds
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
       }
-      let frame = 0;
-      function draw() {
-        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-        particles.forEach(p => {
-          ctx.fillStyle = p.color;
-          ctx.fillRect(p.x, p.y, p.size, p.size);
-          p.y += p.speed;
-          if (p.y > confettiCanvas.height) p.y = -10;
-        });
-        frame++;
-        if (frame < 300) requestAnimationFrame(draw);
-      }
-      draw();
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, {
+          particleCount,
+          origin: { x: randomInRange(0, 1), y: Math.random() - 0.2 }
+        }));
+      }, 250);
     }
 
-    window.addEventListener("resize", () => {
-      confettiCanvas.width = window.innerWidth;
-      confettiCanvas.height = window.innerHeight;
-    });
+    // Confetti Library
+    (function() {
+      var confetti = window.confetti = function(opts) {
+        var count = opts.particleCount || 50;
+        var defaults = {
+          origin: { x: 0.5, y: 0.5 },
+          spread: 360,
+          startVelocity: 30,
+          ticks: 60
+        };
+        for (var i = 0; i < count; i++) {
+          // Just a placeholder minimal confetti effect
+          const div = document.createElement("div");
+          div.style.position = "fixed";
+          div.style.top = (Math.random() * window.innerHeight) + "px";
+          div.style.left = (Math.random() * window.innerWidth) + "px";
+          div.style.width = "6px";
+          div.style.height = "6px";
+          div.style.background = ["#ffcc70", "#f72585", "#7209b7", "#3a0ca3"][Math.floor(Math.random() * 4)];
+          div.style.opacity = "0.9";
+          div.style.borderRadius = "50%";
+          document.body.appendChild(div);
+          setTimeout(() => div.remove(), 1500);
+        }
+      };
+    })();
   </script>
 </body>
 </html>
