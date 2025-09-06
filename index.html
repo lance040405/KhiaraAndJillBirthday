@@ -1,335 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khiara and Jill's Birthday Samgyupsal</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Khiara and Jill's Birthday Samgyupsal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-900:#071233;
+    --blue-700:#0f2a66;
+    --blue-500:#2266d6;
+    --gold-500:#ffd14d;
+    --gold-400:#ffcf66;
+    --glass: rgba(255,255,255,0.04);
+    --muted: rgba(230,244,255,0.85);
+    --bg-1: #030417;
+    --bg-2: #08183a;
+    --accent: linear-gradient(135deg,var(--gold-500),#ffe08a);
+    --radius: 18px;
+    --focus-ring: rgba(255,209,79,0.18);
+    --shadow-lg: 0 18px 40px rgba(8,26,58,0.6);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%; margin:0; font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+  body{
+    background:
+      radial-gradient(600px 300px at 10% 10%, rgba(34,102,214,0.12), transparent 20%),
+      radial-gradient(700px 380px at 95% 90%, rgba(255,193,7,0.06), transparent 18%),
+      linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#eaf4ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+  }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 2.5rem;
-      color: #ffcc70;
-      text-shadow: 0 0 10px rgba(255, 204, 112, 0.7);
-    }
+  .wrap{ width:min(1100px,96%); }
 
-    .main-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 100%;
-      max-width: 1000px;
-    }
+  /* Header */
+  header{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .logo{ width:56px;height:56px;border-radius:12px; background:conic-gradient(from 160deg,var(--gold-500),#fff2,var(--gold-400)); box-shadow:0 6px 18px rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; }
+  .title h1{ margin:0; font-size: clamp(1.25rem,2.4vw,2rem); letter-spacing:0.2px; font-weight:800;
+    background: linear-gradient(90deg, #4ea9ff, var(--gold-500)); -webkit-background-clip:text; color:transparent; }
+  .title p{ margin:4px 0 0; color:var(--muted); font-size:.95rem; }
 
-    .top-section {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+  .badge{ padding:8px 14px; border-radius:999px; background: linear-gradient(90deg,var(--blue-700),var(--blue-900)); box-shadow:var(--shadow-lg); font-weight:600; color:white; display:inline-flex; align-items:center; gap:10px; }
 
-    .countdown {
-      position: relative;
-      padding: 20px;
-      border-radius: 20px;
-      background: #0f3460;
-      text-align: center;
-      font-size: 2rem;
-      color: #ffcc70;
-      flex: 1 1 300px;
-      max-width: 400px;
-      overflow: hidden;
-    }
+  /* layout grid */
+  .grid{ display:grid; grid-template-columns: 1.25fr .9fr; gap:22px; align-items:start; }
+  @media (max-width: 960px){ .grid{ grid-template-columns: 1fr 1fr; } } /* mobile: horizontal split as requested */
+  @media (max-width: 650px){ .grid{ grid-template-columns: 1fr; } /* extra small phones -> stack */ }
 
-    .glow-border {
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      padding: 2px;
-      background: conic-gradient(#ffcc70, #f72585, #7209b7, #3a0ca3, #ffcc70);
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-              mask-composite: exclude;
-      animation: rotate 6s linear infinite;
-    }
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border-radius: var(--radius); padding:18px; border:1px solid rgba(255,255,255,0.06); box-shadow: var(--shadow-lg); position:relative; overflow:hidden;
+  }
 
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+  /* LEFT: Countdown card specifics */
+  .left .borderGlow{
+    position:absolute; inset:-4px; border-radius:calc(var(--radius) + 4px); pointer-events:none;
+    /* use radial gradient whose center we'll move by JS via CSS vars --gx and --gy (percent) */
+    background: radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(255,213,79,0.9), rgba(255,213,79,0.28) 12%, rgba(255,213,79,0.12) 20%, transparent 35%);
+    /* mask to show only the border: content-box trick */
+    padding: 6px; /* thickness of shown border glow area */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0.9;
+    transition: opacity .18s ease;
+    z-index:1;
+  }
+  .left .cardInner{ position:relative; z-index:2; }
 
-    #timer {
-      position: relative;
-      z-index: 1;
-    }
+  .event-title h2{ margin:0; font-size:clamp(1.4rem,2.6vw,2.2rem); }
+  .event-title p{ margin:4px 0 0; color:var(--muted) }
 
-    .form-container {
-      background: #0f3460;
-      padding: 20px;
-      border-radius: 20px;
-      flex: 1 1 300px;
-      max-width: 400px;
-    }
+  .countdown-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:14px; margin-top:12px }
+  @media (max-width:520px){ .countdown-grid{ grid-template-columns: repeat(2,1fr) } }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  .unit{
+    position:relative; padding:18px; border-radius:14px; text-align:center; overflow:hidden; border:1px solid rgba(255,255,255,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .unit:hover{ transform: translateY(-6px); box-shadow: 0 26px 60px rgba(2,6,23,0.6); }
+  .unit .value{ font-weight:700; font-size:clamp(1.8rem,3.2vw,2.6rem); color:var(--gold-500); }
+  .unit .label{ margin-top:6px; font-size:0.85rem; color:var(--muted); letter-spacing:1px }
 
-    input[type="text"] {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-    }
+  .progress-wrap{ margin-top:14px }
+  .progress{ height:9px; background: rgba(255,255,255,0.04); border-radius:999px; overflow:hidden }
+  .progress > i{ display:block; height:100%; width:0%; background: linear-gradient(90deg,var(--gold-500),#ffe08a); box-shadow:0 6px 20px rgba(255,200,60,0.18) inset; transition: width .45s ease }
 
-    .options {
-      display: flex;
-      justify-content: space-around;
-      margin: 10px 0;
-    }
+  /* RIGHT: RSVP card specifics */
+  .right form{ display:grid; gap:12px; }
+  label{ font-weight:600; color:var(--muted); font-size:0.95rem }
+  input[type="text"]{ padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--muted); outline:none; transition: box-shadow .14s ease, border-color .14s ease }
+  input[type="text"]:focus{ box-shadow: 0 6px 20px var(--focus-ring); border-color: rgba(255,209,79,0.5) }
 
-    button {
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      background: #ffcc70;
-      color: #16213e;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+  .radios{ display:flex; gap:10px }
+  .radio-btn{ padding:10px 12px; border-radius:999px; background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); cursor:pointer; display:flex; gap:10px; align-items:center; transition: transform .12s ease, box-shadow .12s ease }
+  .radio-btn input{ accent-color: var(--gold-500) }
+  .radio-btn:hover{ transform:translateY(-3px); box-shadow: 0 12px 30px rgba(8,26,58,0.5) }
 
-    button:hover {
-      background: #f72585;
-      color: white;
-    }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 16px; border-radius:999px; border:none; cursor:pointer; font-weight:700; letter-spacing:0.4px; background:var(--accent); color:#071233; box-shadow:0 14px 36px rgba(255,200,55,0.12); transition: transform .14s ease, box-shadow .14s ease; position:relative; overflow:hidden
+  }
+  .btn:before{ content:''; position:absolute; inset:0; background: radial-gradient(200px 80px at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.15), transparent 40%); mix-blend-mode:overlay; opacity:0.6; transition: opacity .18s ease }
+  .btn:hover{ transform: translateY(-4px); box-shadow:0 28px 68px rgba(255,200,55,0.18) }
 
-    .rsvp-lists {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+  .note{ color:var(--muted); font-size:0.92rem }
 
-    .list {
-      background: #0f3460;
-      padding: 15px;
-      border-radius: 15px;
-      flex: 1 1 300px;
-      max-width: 400px;
-    }
+  .toast{ position:fixed; right:20px; bottom:20px; background: linear-gradient(90deg,#dff5ff,#fff3d6); color:#0b1b2e; padding:12px 14px; border-radius:12px; box-shadow:0 12px 30px rgba(2,6,23,0.5); transform:translateY(10px); opacity:0; transition: all .22s ease }
+  .toast.show{ transform:translateY(0); opacity:1 }
 
-    .list h3 {
-      margin-top: 0;
-      color: #ffcc70;
-    }
+  /* entrance */
+  .card, .unit, form{ transform: translateY(14px); opacity:0; animation: popIn .6s forwards; }
+  .card:nth-child(1){ animation-delay:.06s } .unit{ animation-delay:.12s } form{ animation-delay:.18s }
+  @keyframes popIn{ to{ transform:none; opacity:1 } }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+  /* RSVP lists */
+  .rsvp-lists{ display:flex; gap:12px; margin-top:18px; flex-wrap:wrap; }
+  .rsvp-column{ flex:1 1 220px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.04); }
+  .rsvp-column h4{ margin:6px 0 10px; color:var(--gold-500) }
+  .rsvp-column ul{ list-style:none; padding:0; margin:0; max-height:240px; overflow:auto; }
 
-    ul li {
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* Mobile Adjustments */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      .top-section {
-        flex-direction: row;
-        gap: 15px;
-      }
-
-      .countdown, .form-container {
-        flex: 1 1 100%;
-        max-width: 100%;
-        font-size: 1.2rem;
-      }
-
-      .rsvp-lists {
-        flex-direction: row;
-      }
-
-      .list {
-        flex: 1 1 45%;
-        min-width: 200px;
-      }
-    }
-  </style>
+  /* Responsive adjustments: on small screens make the main grid 2 columns (horizontal split) so countdown + form sit side by side */
+  @media (max-width: 960px){
+    .grid{ grid-template-columns: 1fr 1fr; gap:14px; }
+    .wrap{ padding:10px; }
+  }
+  /* ultrasmall phones: stack vertical to avoid overflowing */
+  @media (max-width: 540px){
+    .grid{ grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-  <h1>Khiara and Jill's Birthday Samgyupsal</h1>
-
-  <div class="main-container">
-    <div class="top-section">
-      <div class="countdown" id="countdown">
-        <div class="glow-border"></div>
-        <div id="timer"></div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="title">
+          <h1>Khiara and Jill's Birthday Samgyupsal</h1>
+          <p>September 13, 2025 · <strong>1:00 PM PT</strong> · Attire: Casual</p>
+        </div>
       </div>
+      <span class="badge" aria-label="Event status"><span style="width:8px;height:8px;border-radius:999px;background:var(--gold-400);box-shadow:0 0 10px var(--gold-400);display:inline-block;margin-right:8px"></span> Live Countdown</span>
+    </header>
 
-      <div class="form-container">
-        <form id="rsvpForm">
-          <label for="name">Name:</label>
-          <input type="text" id="name" required />
-          <div class="options">
-            <label><input type="radio" name="status" value="going" required /> Going</label>
-            <label><input type="radio" name="status" value="notGoing" /> Not Going</label>
+    <div class="grid">
+      <!-- LEFT (countdown) -->
+      <section class="card left" id="countCard" aria-labelledby="count-title">
+        <div class="borderGlow" id="borderGlow"></div>
+        <div class="cardInner">
+          <div class="event-title">
+            <div>
+              <h2 id="count-title">Time until the party</h2>
+              <p class="note">Counting down to September 13, 2025 · 1:00 PM Pacific Time (Los Angeles)</p>
+            </div>
+            <div style="align-self:center; color:var(--muted)">Attire: <strong style="color:var(--gold-500)">Casual</strong></div>
           </div>
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </div>
 
-    <div class="rsvp-lists">
-      <div class="list">
-        <h3>✅ Going</h3>
-        <ul id="goingList"></ul>
-      </div>
-      <div class="list">
-        <h3>❌ Not Going</h3>
-        <ul id="notGoingList"></ul>
+          <div class="countdown-grid" role="timer" aria-live="polite">
+            <div class="unit"><div class="value" id="days">0</div><div class="label">Days</div></div>
+            <div class="unit"><div class="value" id="hours">00</div><div class="label">Hours</div></div>
+            <div class="unit"><div class="value" id="minutes">00</div><div class="label">Minutes</div></div>
+            <div class="unit"><div class="value" id="seconds">00</div><div class="label">Seconds</div></div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress"><i id="prog"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT (RSVP) -->
+      <aside class="card right" aria-labelledby="rsvp-title">
+        <h3 id="rsvp-title" style="margin-top:0">RSVP</h3>
+        <p class="note" style="margin-top:0">Let us know if you can make it — your response is saved on this device.</p>
+
+        <form id="rsvpForm" aria-label="RSVP form">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Your full name" required />
+          </div>
+
+          <div>
+            <label>Will you attend?</label>
+            <div class="radios" role="radiogroup" aria-label="Attendance">
+              <label class="radio-btn"><input type="radio" name="status" value="Going" required /> <span>Going</span></label>
+              <label class="radio-btn"><input type="radio" name="status" value="Not Going" required /> <span>Not Going</span></label>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center">
+            <button class="btn" type="submit" id="submitBtn">Submit RSVP</button>
+          </div>
+
+          <div id="conf" class="note" aria-live="polite" style="margin-top:10px"></div>
+        </form>
+      </aside>
+
+      <!-- RSVP lists (span under both columns) -->
+      <div style="grid-column: 1 / -1; margin-top:14px">
+        <div class="rsvp-lists">
+          <div class="rsvp-column">
+            <h4>🎉 Going</h4>
+            <ul id="goingList"></ul>
+          </div>
+          <div class="rsvp-column">
+            <h4>❌ Not Going</h4>
+            <ul id="notGoingList"></ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <canvas id="confettiCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999;"></canvas>
+  <div class="toast" id="toast">Saved</div>
+  <canvas id="confettiCanvas" style="position:fixed; right:0; bottom:0; left:0; top:0; pointer-events:none; z-index:9999"></canvas>
 
-  <script>
-    // Countdown
-    const eventDate = new Date("2025-09-15T18:00:00").getTime();
-    const timerEl = document.getElementById("timer");
+<script>
+/* -------------------------
+   Countdown (PT) — accurate timezone
+   ------------------------- */
+const eventDate = new Date('2025-09-13T13:00:00-07:00').getTime();
+const els = { d: document.getElementById('days'), h: document.getElementById('hours'), m: document.getElementById('minutes'), s: document.getElementById('seconds'), prog: document.getElementById('prog') };
 
-    const countdown = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = eventDate - now;
+const startTs = Date.now();
+const endTs = eventDate;
+const totalSpan = Math.max(endTs - startTs, 1);
 
-      if (distance < 0) {
-        clearInterval(countdown);
-        timerEl.innerHTML = "🎉 It's Party Time! 🎉";
-        launchConfetti();
-        return;
-      }
+function pad(n){ return String(n).padStart(2,'0'); }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+function updateCountdown(){
+  const now = Date.now();
+  let diff = eventDate - now;
+  if (diff <= 0) {
+    els.d.textContent = '0'; els.h.textContent='00'; els.m.textContent='00'; els.s.textContent='00';
+    els.prog.style.width = '100%';
+    document.title = "It's party time!";
+    return;
+  }
+  const sec = Math.floor(diff/1000)%60;
+  const min = Math.floor(diff/60000)%60;
+  const hr  = Math.floor(diff/3600000)%24;
+  const day = Math.floor(diff/86400000);
 
-      timerEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }, 1000);
+  els.d.textContent = day;
+  els.h.textContent = pad(hr);
+  els.m.textContent = pad(min);
+  els.s.textContent = pad(sec);
 
-    // RSVP Storage
-    const form = document.getElementById("rsvpForm");
-    const goingList = document.getElementById("goingList");
-    const notGoingList = document.getElementById("notGoingList");
+  const elapsed = Math.min(Math.max(1 - (diff/totalSpan), 0), 1);
+  els.prog.style.width = (elapsed*100).toFixed(2) + '%';
+  document.title = `${day}d ${pad(hr)}h ${pad(min)}m ${pad(sec)}s · Samgyupsal`;
+}
 
-    function loadRSVPs() {
-      const data = JSON.parse(localStorage.getItem("rsvps")) || { going: [], notGoing: [] };
-      goingList.innerHTML = "";
-      notGoingList.innerHTML = "";
-      data.going.forEach(name => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        goingList.appendChild(li);
-      });
-      data.notGoing.forEach(name => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        notGoingList.appendChild(li);
-      });
-    }
+(function rafTick(){
+  updateCountdown();
+  requestAnimationFrame(rafTick);
+})();
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const status = document.querySelector("input[name='status']:checked").value;
-      if (!name) return;
+/* -------------------------
+   RSVP storage & list update
+   ------------------------- */
+const KEY = 'khiara-jill-rsvps-v1';
+const form = document.getElementById('rsvpForm');
+const conf = document.getElementById('conf');
+const toast = document.getElementById('toast');
+const goingUl = document.getElementById('goingList');
+const notGoingUl = document.getElementById('notGoingList');
 
-      const data = JSON.parse(localStorage.getItem("rsvps")) || { going: [], notGoing: [] };
-      if (status === "going") {
-        if (!data.going.includes(name)) data.going.push(name);
-      } else {
-        if (!data.notGoing.includes(name)) data.notGoing.push(name);
-      }
-      localStorage.setItem("rsvps", JSON.stringify(data));
-      loadRSVPs();
-      form.reset();
+function showToast(msg='Saved'){ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),2400); }
+
+function loadRSVPs(){
+  const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+  const going = Array.isArray(saved.going) ? saved.going : [];
+  const notGoing = Array.isArray(saved.notGoing) ? saved.notGoing : [];
+  goingUl.innerHTML = ''; notGoingUl.innerHTML = '';
+  going.forEach(n => {
+    const li = document.createElement('li'); li.textContent = n; goingUl.appendChild(li);
+  });
+  notGoing.forEach(n => {
+    const li = document.createElement('li'); li.textContent = n; notGoingUl.appendChild(li);
+  });
+}
+
+function saveRSVP(name, status){
+  const stored = JSON.parse(localStorage.getItem(KEY) || '{}');
+  stored.going = Array.isArray(stored.going) ? stored.going : [];
+  stored.notGoing = Array.isArray(stored.notGoing) ? stored.notGoing : [];
+  // remove name from both lists (prevent duplicates)
+  stored.going = stored.going.filter(x=>x !== name);
+  stored.notGoing = stored.notGoing.filter(x=>x !== name);
+  if(status === 'Going') stored.going.push(name); else stored.notGoing.push(name);
+  localStorage.setItem(KEY, JSON.stringify(stored));
+}
+
+form.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const name = form.name.value.trim();
+  const statusEl = form.querySelector('input[name="status"]:checked');
+  const status = statusEl ? statusEl.value : null;
+  if(!name){ conf.textContent = 'Please enter your name.'; form.name.focus(); return; }
+  if(!status){ conf.textContent = 'Please select Going or Not Going.'; return; }
+  saveRSVP(name, status);
+  loadRSVPs();
+  conf.textContent = `Thanks, ${name}. You marked: ${status}.`;
+  showToast('RSVP saved');
+  form.reset();
+  if(status === 'Going') startConfetti5s();
+});
+
+/* hydrate on load */
+window.addEventListener('DOMContentLoaded', loadRSVPs);
+
+/* -------------------------
+   Confetti (canvas) — runs for 5s only
+   ------------------------- */
+const canvas = document.getElementById('confettiCanvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+let confettiPieces = [], confettiAnimating = false, confettiTimer = null;
+
+function createConfettiPieces(count=150){
+  const arr = [];
+  for(let i=0;i<count;i++){
+    arr.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height - canvas.height,
+      w: 6 + Math.random()*8,
+      h: 8 + Math.random()*10,
+      color: `hsl(${Math.random()*360}, 90%, 60%)`,
+      speed: 2 + Math.random()*4,
+      rot: Math.random()*360,
+      rotSpeed: (Math.random()*6-3)
     });
+  }
+  return arr;
+}
 
-    loadRSVPs();
+function startConfetti5s(){
+  if(confettiAnimating) return; // disallow stacking
+  confettiPieces = createConfettiPieces(150);
+  confettiAnimating = true;
+  const start = Date.now();
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    confettiPieces.forEach(p=>{
+      p.y += p.speed;
+      p.x += Math.sin(p.y*0.02)*1.5;
+      p.rot += p.rotSpeed;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      if(p.y > canvas.height+20){ p.y = -10; p.x = Math.random()*canvas.width; }
+    });
+    if(Date.now() - start < 5000){ requestAnimationFrame(frame); } else { confettiAnimating=false; ctx.clearRect(0,0,canvas.width,canvas.height); }
+  }
+  frame();
+}
+function startConfetti5sTrigger(){ startConfetti5s(); }
+function startConfetti5s(){ startConfetti5sTrigger(); } // alias used above
 
-    // Confetti
-    function launchConfetti() {
-      const duration = 5 * 1000; // 5 seconds
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+/* -------------------------
+   Border glow behavior:
+   - desktop: follows cursor (smoothly)
+   - mobile: slowly moves clockwise around border (smooth)
+   Implementation: move the center of a radial-gradient (CSS vars --gx/--gy) via JS.
+   ------------------------- */
+const glowEl = document.getElementById('borderGlow');
+const card = document.getElementById('countCard');
+let gx = 50, gy = 50;            // current (percents)
+let targetX = 50, targetY = 50;  // target (percents)
+let smoothing = 0.12;
+let isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-      }
+if(!isMobile){
+  // desktop: follow pointer
+  card.addEventListener('mousemove', (ev)=>{
+    const r = card.getBoundingClientRect();
+    const x = ((ev.clientX - r.left) / r.width) * 100;
+    const y = ((ev.clientY - r.top) / r.height) * 100;
+    targetX = Math.max(8, Math.min(92, x)); // clamp so glow stays on border-ish
+    targetY = Math.max(8, Math.min(92, y));
+  });
+  // small idle drift so it's lively
+  let idleT = 0;
+  function desktopLoop(){
+    idleT += 0.01;
+    // lerp towards target
+    gx += (targetX - gx) * smoothing;
+    gy += (targetY - gy) * smoothing;
+    // small breathing
+    const breath = Math.sin(idleT) * 0.8;
+    glowEl.style.setProperty('--gx', gx + breath + '%');
+    glowEl.style.setProperty('--gy', gy + (Math.cos(idleT)*0.4) + '%');
+    requestAnimationFrame(desktopLoop);
+  }
+  desktopLoop();
+} else {
+  // mobile: slowly move clockwise around a circle path (no rotation of element)
+  let angle = 0;
+  const radius = 38; // percent radius of motion around center
+  function mobileLoop(){
+    angle += 0.4 * (Math.PI/180); // slow in radians per frame (~0.4deg)
+    const cx = 50 + radius * Math.cos(angle);
+    const cy = 50 + radius * Math.sin(angle);
+    glowEl.style.setProperty('--gx', cx + '%');
+    glowEl.style.setProperty('--gy', cy + '%');
+    requestAnimationFrame(mobileLoop);
+  }
+  mobileLoop();
+}
 
-      const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
+/* ensure glow variables exist initially */
+glowEl.style.setProperty('--gx','50%');
+glowEl.style.setProperty('--gy','50%');
 
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        const particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, {
-          particleCount,
-          origin: { x: randomInRange(0, 1), y: Math.random() - 0.2 }
-        }));
-      }, 250);
-    }
-
-    // Confetti Library
-    (function() {
-      var confetti = window.confetti = function(opts) {
-        var count = opts.particleCount || 50;
-        var defaults = {
-          origin: { x: 0.5, y: 0.5 },
-          spread: 360,
-          startVelocity: 30,
-          ticks: 60
-        };
-        for (var i = 0; i < count; i++) {
-          // Just a placeholder minimal confetti effect
-          const div = document.createElement("div");
-          div.style.position = "fixed";
-          div.style.top = (Math.random() * window.innerHeight) + "px";
-          div.style.left = (Math.random() * window.innerWidth) + "px";
-          div.style.width = "6px";
-          div.style.height = "6px";
-          div.style.background = ["#ffcc70", "#f72585", "#7209b7", "#3a0ca3"][Math.floor(Math.random() * 4)];
-          div.style.opacity = "0.9";
-          div.style.borderRadius = "50%";
-          document.body.appendChild(div);
-          setTimeout(() => div.remove(), 1500);
-        }
-      };
-    })();
-  </script>
+/* done */
+</script>
 </body>
 </html>
