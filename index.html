@@ -1,310 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Khiara and Jill's Birthday Samgyupsal</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #1b1f34, #0c0e1a);
-      color: #fff;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0a1a2f, #001f3f);
+      color: white;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       min-height: 100vh;
+      overflow-x: hidden;
       padding: 20px;
     }
 
-    .container {
-      max-width: 1100px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 24px;
-      background: rgba(20, 22, 35, 0.7);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(12px);
-    }
-
-    .header {
-      grid-column: span 2;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .header h1 {
+    h1 {
       font-size: 2.2rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, #4ea9ff, #FFD700);
+      margin: 20px 0;
+      text-align: center;
+      background: linear-gradient(90deg, #ffd700, #87ceeb);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin: 0;
     }
 
-    .countdown-card {
+    .countdown {
       position: relative;
-      padding: 25px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 2px solid transparent;
-    }
-
-    .countdown-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      padding: 2px;
-      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 215, 0, 0.9), transparent 60%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-              mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    .countdown-card h2 {
-      font-size: 1.4rem;
-      margin: 0;
+      border: 3px solid rgba(255, 215, 0, 0.3);
+      border-radius: 20px;
+      padding: 20px 40px;
+      font-size: 2rem;
       text-align: center;
-    }
-
-    .time-grid {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-      gap: 12px;
-    }
-
-    .time-box {
-      flex: 1;
-      text-align: center;
-      padding: 18px;
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      transition: transform 0.2s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      margin-bottom: 25px;
+      transition: transform 0.3s ease;
+      width: 100%;
+      max-width: 600px;
     }
 
-    .time-box:hover {
-      transform: translateY(-4px);
+    .countdown:hover {
+      transform: translateY(-5px);
     }
 
-    .time-box h2 {
-      font-size: 2.2rem;
-      margin: 0;
-      font-weight: 700;
+    .glow-border {
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 20px;
+      pointer-events: none;
+      background: conic-gradient(
+        from var(--angle, 0deg),
+        #ffd700,
+        transparent 60%
+      );
+      mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      padding: 3px;
+      z-index: 1;
     }
 
-    .time-box span {
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
-
-    .rsvp-card {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 16px;
+    .form-container {
+      background: rgba(255, 255, 255, 0.05);
       padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 25px;
     }
 
-    .rsvp-card h2 {
-      margin-top: 0;
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      color: #FFD700;
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 500;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 12px;
-      border-radius: 12px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
       border: none;
-      margin-bottom: 16px;
+      outline: none;
       font-size: 1rem;
     }
 
     .options {
       display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
+      gap: 15px;
+      margin: 10px 0;
     }
 
     button {
-      background: linear-gradient(90deg, #0077ff, #FFD700);
+      background: linear-gradient(90deg, #ffd700, #87ceeb);
       border: none;
-      padding: 12px 20px;
-      border-radius: 30px;
+      padding: 10px 20px;
+      border-radius: 12px;
       font-size: 1rem;
-      font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      width: 100%;
-      color: #fff;
+      font-weight: bold;
     }
 
     button:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
     }
 
-    .rsvp-list {
-      margin-top: 20px;
-      font-size: 0.95rem;
+    .rsvp-lists {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 600px;
     }
 
-    canvas#confetti {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 999;
+    .list {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .list h3 {
+      margin-top: 0;
+      color: #ffd700;
+      font-size: 1.2rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul li {
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .countdown {
+        font-size: 1.4rem;
+        padding: 15px 20px;
+      }
+
+      .rsvp-lists {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-  <canvas id="confetti"></canvas>
-  <div class="container">
-    <div class="header">
-      <h1>Khiara and Jill's Birthday Samgyupsal</h1>
-      <p>September 13, 2025 · 1:00 PM PT · Attire: Casual</p>
-    </div>
+  <h1>Khiara and Jill's Birthday Samgyupsal</h1>
+  <div class="countdown" id="countdown">
+    <div class="glow-border"></div>
+    <div id="timer"></div>
+  </div>
 
-    <!-- Countdown -->
-    <div class="countdown-card" id="countdown-card">
-      <h2>Countdown to Celebration</h2>
-      <div class="time-grid">
-        <div class="time-box"><h2 id="days">0</h2><span>Days</span></div>
-        <div class="time-box"><h2 id="hours">0</h2><span>Hours</span></div>
-        <div class="time-box"><h2 id="minutes">0</h2><span>Minutes</span></div>
-        <div class="time-box"><h2 id="seconds">0</h2><span>Seconds</span></div>
-      </div>
-    </div>
-
-    <!-- RSVP -->
-    <div class="rsvp-card">
-      <h2>RSVP</h2>
-      <input type="text" id="name" placeholder="Your full name">
+  <div class="form-container">
+    <form id="rsvpForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required />
       <div class="options">
-        <label><input type="radio" name="rsvp" value="Going"> Going</label>
-        <label><input type="radio" name="rsvp" value="Not Going"> Not Going</label>
+        <label><input type="radio" name="status" value="going" required /> Going</label>
+        <label><input type="radio" name="status" value="notGoing" /> Not Going</label>
       </div>
-      <button onclick="submitRSVP()">Submit RSVP</button>
-      <div class="rsvp-list" id="rsvp-list"></div>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="rsvp-lists">
+    <div class="list">
+      <h3>✅ Going</h3>
+      <ul id="goingList"></ul>
+    </div>
+    <div class="list">
+      <h3>❌ Not Going</h3>
+      <ul id="notGoingList"></ul>
     </div>
   </div>
 
+  <canvas id="confettiCanvas"></canvas>
+
   <script>
-    // Countdown logic
-    const eventDate = new Date("September 13, 2025 13:00:00 PST").getTime();
-    setInterval(() => {
+    // Countdown
+    const countdownDate = new Date("September 13, 2025 13:00:00 GMT-0800").getTime();
+    const timerEl = document.getElementById("timer");
+
+    function updateCountdown() {
       const now = new Date().getTime();
-      const diff = eventDate - now;
-
-      document.getElementById("days").textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
-      document.getElementById("hours").textContent = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      document.getElementById("minutes").textContent = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      document.getElementById("seconds").textContent = Math.floor((diff % (1000 * 60)) / 1000);
-    }, 1000);
-
-    // Gold border follows cursor
-    const countdownCard = document.getElementById("countdown-card");
-    countdownCard.addEventListener("mousemove", e => {
-      const rect = countdownCard.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      countdownCard.style.setProperty("--x", x + "%");
-      countdownCard.style.setProperty("--y", y + "%");
-    });
-
-    // RSVP logic
-    const rsvpList = document.getElementById("rsvp-list");
-    function submitRSVP() {
-      const name = document.getElementById("name").value.trim();
-      const choice = document.querySelector("input[name='rsvp']:checked");
-      if (!name || !choice) {
-        alert("Please enter your name and select an option.");
+      const diff = countdownDate - now;
+      if (diff <= 0) {
+        timerEl.innerHTML = "🎉 It's Party Time! 🎉";
+        clearInterval(interval);
         return;
       }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      timerEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    const interval = setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-      const entry = document.createElement("div");
-      entry.textContent = `${name} — ${choice.value}`;
-      rsvpList.appendChild(entry);
+    // Glow border logic
+    const countdownEl = document.getElementById("countdown");
+    const glow = countdownEl.querySelector(".glow-border");
+    let angle = 0;
+    let isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-      if (choice.value === "Going") {
-        startConfetti();
+    if (!isMobile) {
+      document.addEventListener("mousemove", (e) => {
+        const rect = countdownEl.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        angle = Math.atan2(y, x) * (180 / Math.PI);
+        glow.style.setProperty("--angle", angle + "deg");
+      });
+    } else {
+      function animateBorder() {
+        angle += 1;
+        glow.style.setProperty("--angle", angle + "deg");
+        requestAnimationFrame(animateBorder);
       }
-
-      document.getElementById("name").value = "";
-      choice.checked = false;
+      animateBorder();
     }
 
-    // Confetti effect
-    const confettiCanvas = document.getElementById("confetti");
-    const ctx = confettiCanvas.getContext("2d");
-    let confettiParticles = [];
-    let confettiActive = false;
+    // RSVP logic with localStorage
+    const form = document.getElementById("rsvpForm");
+    const goingList = document.getElementById("goingList");
+    const notGoingList = document.getElementById("notGoingList");
 
-    function resizeCanvas() {
+    function loadRSVPs() {
+      const data = JSON.parse(localStorage.getItem("rsvps")) || [];
+      data.forEach(r => addToList(r.name, r.status, false));
+    }
+
+    function saveRSVP(name, status) {
+      const data = JSON.parse(localStorage.getItem("rsvps")) || [];
+      data.push({ name, status });
+      localStorage.setItem("rsvps", JSON.stringify(data));
+    }
+
+    function addToList(name, status, save = true) {
+      const li = document.createElement("li");
+      li.textContent = name;
+      if (status === "going") goingList.appendChild(li);
+      else notGoingList.appendChild(li);
+      if (save) saveRSVP(name, status);
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const status = document.querySelector("input[name='status']:checked").value;
+      if (!name) return;
+      addToList(name, status, true);
+      form.reset();
+      if (status === "going") launchConfetti();
+    });
+
+    loadRSVPs();
+
+    // Confetti
+    const confettiCanvas = document.getElementById("confettiCanvas");
+    const ctx = confettiCanvas.getContext("2d");
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+
+    function launchConfetti() {
+      let particles = [];
+      for (let i = 0; i < 100; i++) {
+        particles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+          size: Math.random() * 8 + 2,
+          speed: Math.random() * 5 + 2
+        });
+      }
+      let frame = 0;
+      function draw() {
+        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        particles.forEach(p => {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.size, p.size);
+          p.y += p.speed;
+          if (p.y > confettiCanvas.height) p.y = -10;
+        });
+        frame++;
+        if (frame < 300) requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    window.addEventListener("resize", () => {
       confettiCanvas.width = window.innerWidth;
       confettiCanvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    function startConfetti() {
-      confettiActive = true;
-      confettiParticles = Array.from({ length: 150 }, () => ({
-        x: Math.random() * confettiCanvas.width,
-        y: Math.random() * confettiCanvas.height - confettiCanvas.height,
-        r: Math.random() * 6 + 4,
-        d: Math.random() * 200 + 50,
-        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-        tilt: Math.random() * 10 - 10
-      }));
-      setTimeout(() => confettiActive = false, 5000); // stops after 5s
-    }
-
-    function drawConfetti() {
-      if (!confettiActive) return;
-      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-      confettiParticles.forEach(p => {
-        ctx.beginPath();
-        ctx.fillStyle = p.color;
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
-        ctx.fill();
-      });
-      updateConfetti();
-    }
-
-    function updateConfetti() {
-      confettiParticles.forEach(p => {
-        p.y += Math.cos(p.d) + 2;
-        p.x += Math.sin(p.d);
-        if (p.y > confettiCanvas.height) {
-          p.y = -10;
-          p.x = Math.random() * confettiCanvas.width;
-        }
-      });
-    }
-
-    (function animate() {
-      requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-      drawConfetti();
-    })();
+    });
   </script>
 </body>
 </html>
