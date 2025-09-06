@@ -49,8 +49,8 @@
 
   /* layout grid */
   .grid{ display:grid; grid-template-columns: 1.25fr .9fr; gap:22px; align-items:start; }
-  @media (max-width: 960px){ .grid{ grid-template-columns: 1fr 1fr; } } /* mobile: horizontal split as requested */
-  @media (max-width: 650px){ .grid{ grid-template-columns: 1fr; } /* extra small phones -> stack */ }
+  @media (max-width: 960px){ .grid{ grid-template-columns: 1fr 1fr; } } /* keep horizontal split on many mobiles */
+  @media (max-width: 540px){ .grid{ grid-template-columns: 1fr; } /* very small phones -> stack */ }
 
   .card{
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
@@ -366,13 +366,11 @@ function startConfetti5s(){
   }
   frame();
 }
-function startConfetti5sTrigger(){ startConfetti5s(); }
-function startConfetti5s(){ startConfetti5sTrigger(); } // alias used above
 
 /* -------------------------
    Border glow behavior:
    - desktop: follows cursor (smoothly)
-   - mobile: slowly moves clockwise around border (smooth)
+   - mobile: slowly move clockwise around a circle path (smooth)
    Implementation: move the center of a radial-gradient (CSS vars --gx/--gy) via JS.
    ------------------------- */
 const glowEl = document.getElementById('borderGlow');
