@@ -124,15 +124,112 @@
   .rsvp-column h4{ margin:6px 0 10px; color:var(--gold-500) }
   .rsvp-column ul{ list-style:none; padding:0; margin:0; max-height:240px; overflow:auto; }
 
-  /* Responsive adjustments: on small screens make the main grid 2 columns (horizontal split) so countdown + form sit side by side */
+  /* Responsive adjustments */
   @media (max-width: 960px){
     .grid{ grid-template-columns: 1fr 1fr; gap:14px; }
     .wrap{ padding:10px; }
   }
-  /* ultrasmall phones: stack vertical to avoid overflowing */
   @media (max-width: 540px){
     .grid{ grid-template-columns: 1fr; }
+    header{ flex-direction:column; align-items:flex-start; text-align:left; }
+    .rsvp-lists{ flex-direction:column; }
   }
+
+  /* ========== ADDED: Mobile stacking & visibility fixes (ONLY ADDED BELOW) ==========
+     These rules apply only to small screens and do not change desktop behavior.
+     They ensure nothing is cut off and the order stacks as requested:
+     [TITLE] [details] --- [COUNTDOWN] --- [RSVP FORM] --- [RSVP LIST]
+  ================================================================================ */
+  @media (max-width: 540px) {
+    /* make the page flow top-to-bottom and avoid centering that cuts content */
+    body {
+      padding: 16px;
+      align-items: flex-start; /* start at top instead of vertical centering */
+      min-height: 100vh;
+    }
+
+    /* container full width */
+    .wrap {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* header stacks cleanly: title then details */
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .title h1 {
+      font-size: 1.5rem;
+      line-height: 1.15;
+    }
+    .title p {
+      font-size: 0.95rem;
+    }
+
+    /* ensure grid becomes single column and each child occupies full width */
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .grid > * {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
+    /* cards compressed a bit for small screens, but keep design */
+    .card {
+      padding: 14px;
+      border-radius: 14px;
+    }
+
+    /* countdown layout readable on phones */
+    .countdown-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .unit {
+      padding: 12px;
+    }
+    .unit .value {
+      font-size: 1.6rem;
+    }
+
+    .progress-wrap {
+      margin-top: 12px;
+    }
+
+    /* RSVP lists stack vertically and expand fully */
+    .rsvp-lists {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .rsvp-column {
+      max-height: none;
+      min-height: 64px;
+      overflow: visible;
+    }
+
+    /* make sure border glow doesn't produce overflow or cover important content */
+    .left .borderGlow {
+      inset: -2px;
+      padding: 4px;
+    }
+
+    /* ensure confetti canvas stays full-bleed and non-blocking */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  }
+  /* ============================================================================== */
 </style>
 </head>
 <body>
